@@ -8,8 +8,9 @@ clf           % clears any figures already up
 n = 50; %number of oscillators
 w = randn(n,1); %Random internal frequencies chosen from normal distribution
 u_int = rand(n,1)*2*pi; %Random initial conditions
+u_prime_int = randn(n,1); %random initial velocity conditions
 
-k = 20; %Coupling strength
+k = -100; %Coupling strength
 a = 10; %alpha term on the first derivative
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -47,13 +48,56 @@ pause()
 %Integrate model
 disp('Solving ODE')
 % ode45
-[t,u]=ode45(@(t,y) kuramoto_2([y(2),y(1)],a,w,k,n,G),[0,500],u_int)
+[t,u]=ode45(@(t,y) kuramoto_2(y,a,w,k,n,G),[0,500],[u_int; u_prime_int]);
+
+%Interpolate time points for even movie 
+
+t0 = 0:5:500;
+u0 = interp1(t,u,t0);
+
+t= t0;
+u=u0;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Make movie of solution
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+frame = 1;
+
+figure(2)
+for i=1:length(t)
+   % if mod(i,5)==0
+        %subplot(1,2,1)         % plot order parameter
+        %    plot(t(1:i),r(1:i))
+
+        subplot(1,3,1)        % plot circle
+             plot(u(i,(1:n)),'.')
+             axis([1 n 0 2*pi])
+      
+             subplot(1,3,2)
+            plot(cos(u(i,(1:n))),sin(u(i,(1:n))),'.',x1,x2)
+            
+            subplot(1,3,3)
+            plot(u(i,(n+1:end)),'.')
+            axis([1 n -3/a 3/a])
+            
+             F(frame) = getframe(gcf);
+                frame = frame+ 1;
+              %  j= j+1;
+                
+            pause(0)
+        clf
+    %end
+end
 
 
 function output = kuramoto_2(u,a,w,k,n,G)
+pos = u(1:n);
+vel = u(n+1:end);
 
-u_mat = repmat(u(1),1,n);
-output = [u(2); -a*u(1) + w + (k/n)*sum(G.*sin(u_mat' - u_mat),2)];
+u_mat = repmat(pos,1,n);
+F = (k/n)*sum(G.*sin(u_mat' - u_mat),2);
+output = [vel; -a*vel + w + F];
 
 end
 
