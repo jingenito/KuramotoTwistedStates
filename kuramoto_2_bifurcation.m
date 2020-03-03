@@ -30,4 +30,4 @@ for i=1:length(KVec)
     Z(i) = u(length(u));
 end
 
-plot(KVec,Z)
+plot(KVec,Z,'o')
