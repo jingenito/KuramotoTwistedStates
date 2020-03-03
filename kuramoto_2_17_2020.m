@@ -15,7 +15,7 @@ u_int = rand(n,1)*2*pi; %Random initial conditions
 u_prime_int = randn(n,1); %random initial velocity conditions
 
 k = -50; %Coupling strength
-a = 10; %alpha term on the first derivative
+a = -0.001; %alpha term on the first derivative
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Graph connectivity
@@ -78,7 +78,7 @@ for i=1:length(t)
     
     subplot(1,3,3)
     plot(u(i,(n+1:end)),'.')
-    axis([1 n -3/a 3/a])
+    axis([1 n -3/abs(a) 3/abs(a)])
     
     F(frame) = getframe(gcf);
     frame = frame+ 1;
