@@ -25,9 +25,9 @@ a = 0.5;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Z = []; %vector to track long term behavior
 for i=1:length(KVec)
-    [t,u]=ode45(@(t,y) kuramoto_2(y,a,w,KVec(i),n,G),[0,500],[u_int; u_prime_int]);
+    [t,u]=ode45(@(t,y) kuramoto_2(y,a,w,KVec(i),n,G),[0,50],[u_int; u_prime_int]);
     
-    r = u(length(t), n+1:end); %get the theta vector 
+    r = u(length(t), 1:n); %get the theta vector 
     Z(i) = Kuramoto_OrderParameter(r); %caclulate the complex order parameter
     
     %set initial conditions to the previous solution
@@ -36,9 +36,9 @@ for i=1:length(KVec)
 end
 
 for i=length(KVec):-1:1
-    [t,u]=ode45(@(t,y) kuramoto_2(y,a,w,KVec(i),n,G),[0,500],[u_int; u_prime_int]);
+    [t,u]=ode45(@(t,y) kuramoto_2(y,a,w,KVec(i),n,G),[0,50],[u_int; u_prime_int]);
     
-    r = u(length(t), n+1:end); %get the theta vector 
+    r = u(length(t), 1:n); %get the theta vector 
     Z(i) = Kuramoto_OrderParameter(r); %caclulate the complex order parameter
 
 end
