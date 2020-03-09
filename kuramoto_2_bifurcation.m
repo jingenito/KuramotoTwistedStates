@@ -32,15 +32,16 @@ for i=1:length(KVec)
     
     %set initial conditions to the previous solution
     u_int = r;
-    u_prime_int = u(length(t), 1:n);
+    u_prime_int = u(length(t), n+1:end);
 end
 
+Z1 = []
 for i=length(KVec):-1:1
     [t,u]=ode45(@(t,y) kuramoto_2(y,a,w,KVec(i),n,G),[0,50],[u_int; u_prime_int]);
     
     r = u(length(t), 1:n); %get the theta vector 
-    Z(i) = Kuramoto_OrderParameter(r); %caclulate the complex order parameter
+    Z1(i) = Kuramoto_OrderParameter(r); %caclulate the complex order parameter
 
 end
 
-plot(KVec,Z,'o')
+plot(KVec,Z,'o', KVec,Z1,'o')
