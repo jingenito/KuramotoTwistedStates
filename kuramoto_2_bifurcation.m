@@ -40,10 +40,7 @@ for i=length(KVec):-1:1
     
     r = u(length(t), n+1:end); %get the theta vector 
     Z(i) = Kuramoto_OrderParameter(r); %caclulate the complex order parameter
-    
-    %set initial conditions to the previous solution
-    u_int = r;
-    u_prime_int = u(length(t), 1:n);
+
 end
 
 plot(KVec,Z,'o')
