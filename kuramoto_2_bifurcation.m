@@ -18,7 +18,7 @@ u_prime_int = randn(n,1); %random initial velocity conditions
 G = sw_graph(n,.2,.4);   %Adjacency matrix of network connections
 
 KVec = linspace(0,12,100);
-a = 10;
+a = 0.5;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Loop over all (K,a) pairs and track the long term behavior
