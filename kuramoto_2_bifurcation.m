@@ -18,7 +18,7 @@ u_prime_int = randn(n,1); %random initial velocity conditions
 G = sw_graph(n,.2,.4);   %Adjacency matrix of network connections
 
 KVec = linspace(0,12,100);
-a = 0.5;
+a = 5;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Loop over all (K,a) pairs and track the long term behavior
@@ -35,7 +35,7 @@ for i=1:length(KVec)
     u_prime_int = u(length(t), n+1:end);
 end
 
-Z1 = []
+Z1 = [];
 for i=length(KVec):-1:1
     [t,u]=ode45(@(t,y) kuramoto_2(y,a,w,KVec(i),n,G),[0,50],[u_int; u_prime_int]);
     
