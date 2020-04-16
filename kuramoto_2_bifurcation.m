@@ -9,7 +9,7 @@ clf           % clears any figures already up
 %% Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-n = 1000; %number of oscillators
+n = 100; %number of oscillators
 w = randn(n,1); %Random internal frequencies chosen from normal distribution
 u_int = rand(n,1)*2*pi; %Random initial conditions
 u_prime_int = randn(n,1); %random initial velocity conditions
@@ -22,17 +22,17 @@ r = 0.4;
 G = sw_graph(n,p,r);   %Adjacency matrix of network connections
 
 KVec = linspace(-40,0,100);
-a = 10; %inertia term
+a = 1; %inertia term
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Loop over all (K,a) pairs and track the long term behavior
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %storing result to calculate the l2 norm on each iteration
-twistedStateVec = exp(1i .* linspace(0,1,n));
-h_sync_vecs = Kuramoto_SWG_SynchOrderParameter(twistedStateVec,p,r); %transposing once for l-2 norm
+
+h_sync_vecs = Kuramoto_SWG_SynchOrderParameter(linspace(0,1,n),p,r); %transposing once for l-2 norm
 h_sync1 = h_sync_vecs(:,1); %positive eigenvalues
 h_sync2 = h_sync_vecs(:,2); %negative eigenvalues
-h_sync = (1/n) * sqrt(h_sync1.^2 + h_sync2.^2); %calculte the l2 norm
+%h_sync = (1/n) * sqrt(h_sync1.^2 + h_sync2.^2); %calculte the l2 norm
 %projected in both twisted state directions
 
 Z = zeros(1,length(KVec)); %preallocating memory for optimization
@@ -41,7 +41,8 @@ for i=1:length(KVec)
     
     theta = u(length(t), 1:n); %get the theta vector 
     h = Kuramoto_SWG_OrderParameter(theta,G); %caclulate the complex order parameter
-    Z(i) = abs(h * h_sync) / length(h)^2;
+    Z(i) = (1/n) * sqrt((abs(h * h_sync1))^2 + (abs(h * h_sync2))^2); %calculate the h_sync vector
+    %Z(i) = h_sync / length(h)^2;
     
     %set initial conditions to the previous solution
     u_int = theta;
