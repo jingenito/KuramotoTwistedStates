@@ -34,21 +34,23 @@ for i=1:length(KVec)
     [t,u]=ode45(@(t,y) kuramoto_2(y,a,w,KVec(i),n,G),[0,50],[u_int; u_prime_int]);
     
     theta = u(length(t), 1:n); %get the theta vector 
-    h = Kuramoto_OrderParameter(theta); %caclulate the complex order parameter
-    Z(i) = sqrt(h * conj(h)); %calculate the h_sync vector
+    h = Kuramoto_SWG_OrderParameter(theta,G); %vector of complex order parameters
+    Z(i) = (abs(h' * conj(h))) / n; %calculate the l2 norm
     
     %set initial conditions to the previous solution
     u_int = theta;
     u_prime_int = u(length(t), n+1:end);
 end
 
+disp('Finished Loop 1')
+
 Z1 = zeros(1,length(KVec)); %preallocating memory for optimization
 for i=length(KVec):-1:1
     [t,u]=ode45(@(t,y) kuramoto_2(y,a,w,KVec(i),n,G),[0,50],[u_int; u_prime_int]);
     
     theta = u(length(t), 1:n); %get the theta vector 
-    h = Kuramoto_OrderParameter(theta); %caclulate the complex order parameter
-    Z1(i) = sqrt(h * conj(h));
+    h = Kuramoto_SWG_OrderParameter(theta,G); %vector of complex order parameters
+    Z1(i) = (abs(h' * conj(h))) / n; %calculate the l2 norm
 end
 
 plot(KVec,Z,'.','Color','b')

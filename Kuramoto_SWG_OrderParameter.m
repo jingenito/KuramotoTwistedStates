@@ -3,5 +3,4 @@
 %% modified complex order parameter.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function val = Kuramoto_SWG_OrderParameter(x,W)
-
-val = (exp(1i.*x) * W) / length(x);
+val = 1/length(x)*sum(W .* exp(1i*x),2);
