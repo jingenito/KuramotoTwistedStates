@@ -22,7 +22,7 @@ r = 0.4;
 G = sw_graph(n,p,r);   %Adjacency matrix of network connections
 
 KVec = linspace(0,12,1000);
-a = 1.05; %inertia term
+a = 0.3; %inertia term
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Loop over all (K,a) pairs and track the long term behavior
