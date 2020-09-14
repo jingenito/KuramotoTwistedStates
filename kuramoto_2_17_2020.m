@@ -9,13 +9,13 @@ clf           % clears any figures already up
 %% Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-n = 50; %number of oscillators
+n = 1000; %number of oscillators
 w = randn(n,1); %Random internal frequencies chosen from normal distribution
 u_int = rand(n,1)*2*pi; %Random initial conditions
 u_prime_int = randn(n,1); %random initial velocity conditions
 
-k = -50; %Coupling strength
-a = -0.001; %alpha term on the first derivative
+k = -30; %Coupling strength
+a = 10; %alpha term on the first derivative
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Graph connectivity
@@ -34,9 +34,9 @@ gplot(G,sw_nodes,'.-'); %plot graph
 
 %Unit circle (to later plot)
 figure(2)
-x = linspace(0,2*pi,100);
+x = linspace(0,2*pi,n);
 x1 = cos(x);
-x2=sin(x);
+x2 = sin(x);
 
 
 %Plot initial conditions
@@ -49,17 +49,18 @@ plot(cos(u_int),sin(u_int),'.',x1,x2)
 
 pause()
  
+sol_end_point = 200;
 %Integrate model
 disp('Solving ODE')
 % ode45
-[t,u]=ode45(@(t,y) kuramoto_2(y,a,w,k,n,G),[0,500],[u_int; u_prime_int]);
+[t,u]=ode45(@(t,y) kuramoto_2(y,a,w,k,n,G),[0,sol_end_point],[u_int; u_prime_int]);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Make movie of solution
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Interpolate time points for even movie 
-t0 = 0:5:500;
+t0 = 0:5:sol_end_point;
 u0 = interp1(t,u,t0);
 
 t= t0;
