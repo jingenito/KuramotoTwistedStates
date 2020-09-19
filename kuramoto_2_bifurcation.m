@@ -21,44 +21,41 @@ r = 0.4;
 %going to use the same connections for each (K,a) pair
 G = sw_graph(n,p,r);   %Adjacency matrix of network connections
 
-KVec = linspace(-40,0,100);
-a = 1; %inertia term
+KVec = linspace(0,12,1000);
+a = 0.3; %inertia term
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Loop over all (K,a) pairs and track the long term behavior
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %storing result to calculate the l2 norm on each iteration
 
-h_sync_vecs = Kuramoto_SWG_SynchOrderParameter(linspace(0,1,n),p,r); %transposing once for l-2 norm
-h_sync1 = h_sync_vecs(:,1); %positive eigenvalues
-h_sync2 = h_sync_vecs(:,2); %negative eigenvalues
-%h_sync = (1/n) * sqrt(h_sync1.^2 + h_sync2.^2); %calculte the l2 norm
-%projected in both twisted state directions
-
 Z = zeros(1,length(KVec)); %preallocating memory for optimization
 for i=1:length(KVec)
     [t,u]=ode45(@(t,y) kuramoto_2(y,a,w,KVec(i),n,G),[0,50],[u_int; u_prime_int]);
     
     theta = u(length(t), 1:n); %get the theta vector 
-    h = Kuramoto_SWG_OrderParameter(theta,G); %caclulate the complex order parameter
-    Z(i) = (1/n) * sqrt((abs(h * h_sync1))^2 + (abs(h * h_sync2))^2); %calculate the h_sync vector
-    %Z(i) = h_sync / length(h)^2;
+    h = Kuramoto_SWG_OrderParameter(theta,G); %vector of complex order parameters
+    Z(i) = (abs(h' * conj(h))) / n; %calculate the l2 norm
     
     %set initial conditions to the previous solution
     u_int = theta;
     u_prime_int = u(length(t), n+1:end);
 end
 
-% Z1 = zeros(1,length(KVec)); %preallocating memory for optimization
-% for i=length(KVec):-1:1
-%     [t,u]=ode45(@(t,y) kuramoto_2(y,a,w,KVec(i),n,G),[0,50],[u_int; u_prime_int]);
-%     
-%     theta = u(length(t), 1:n); %get the theta vector 
-%     h = Kuramoto_SWG_OrderParameter(theta,G); %caclulate the complex order parameter
-%     Z1(i) = abs(h * h_sync) / length(h)^2;
-% end
+disp('Finished Loop 1')
+u_int = ones(n,1);
+u_prime_int = zeros(n,1);
+
+Z1 = zeros(1,length(KVec)); %preallocating memory for optimization
+for i=length(KVec):-1:1
+    [t,u]=ode45(@(t,y) kuramoto_2(y,a,w,KVec(i),n,G),[0,50],[u_int; u_prime_int]);
+    
+    theta = u(length(t), 1:n); %get the theta vector 
+    h = Kuramoto_SWG_OrderParameter(theta,G); %vector of complex order parameters
+    Z1(i) = (abs(h' * conj(h))) / n; %calculate the l2 norm
+end
 
 plot(KVec,Z,'.','Color','b')
-% hold on
-% plot(KVec,Z1,'.','Color','r')
-% hold off
+hold on
+plot(KVec,Z1,'.','Color','r')
+hold off

@@ -11,5 +11,4 @@ for i=1:length(x)
     z = z + exp(1j*x(i)); 
 end
 
-z = z / length(x); %take the average of the sum
-val = abs(z); %output the modulous
+val = z / length(x); %take the average of the sum
