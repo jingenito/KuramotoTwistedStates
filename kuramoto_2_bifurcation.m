@@ -43,6 +43,8 @@ for i=1:length(KVec)
 end
 
 disp('Finished Loop 1')
+u_int = ones(n,1);
+u_prime_int = zeros(n,1);
 
 Z1 = zeros(1,length(KVec)); %preallocating memory for optimization
 for i=length(KVec):-1:1
