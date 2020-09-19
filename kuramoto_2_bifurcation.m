@@ -55,7 +55,9 @@ for i=length(KVec):-1:1
     Z1(i) = (abs(h' * conj(h))) / n; %calculate the l2 norm
 end
 
+f = figure;
 plot(KVec,Z,'.','Color','b')
 hold on
 plot(KVec,Z1,'.','Color','r')
 hold off
+saveas(f,'Bif_0_K_12_a_0-03_N_1000.png')
