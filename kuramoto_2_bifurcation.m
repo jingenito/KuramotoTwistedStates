@@ -21,7 +21,9 @@ r = 0.4;
 %going to use the same connections for each (K,a) pair
 G = sw_graph(n,p,r);   %Adjacency matrix of network connections
 
-KVec = linspace(0,12,1000);
+k0 = 0;
+kn = 12;
+KVec = linspace(k0,kn,100);
 a = 0.3; %inertia term
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -38,8 +40,8 @@ for i=1:length(KVec)
     Z(i) = (abs(h' * conj(h))) / n; %calculate the l2 norm
     
     %set initial conditions to the previous solution
-    u_int = theta;
-    u_prime_int = u(length(t), n+1:end);
+%     u_int = theta;
+%     u_prime_int = u(length(t), n+1:end);
 end
 
 disp('Finished Loop 1')
@@ -55,9 +57,10 @@ for i=length(KVec):-1:1
     Z1(i) = (abs(h' * conj(h))) / n; %calculate the l2 norm
 end
 
+filename = "Bif_" + k0 + "_K_" + kn + "_a_" + strrep(""+a,".","-") + "_N_" + n + ".png";
 f = figure;
 plot(KVec,Z,'.','Color','b')
 hold on
 plot(KVec,Z1,'.','Color','r')
 hold off
-saveas(f,'Bif_0_K_12_a_0-03_N_1000.png')
+saveas(f,filename)
