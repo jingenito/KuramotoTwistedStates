@@ -14,8 +14,8 @@ w = randn(n,1); %Random internal frequencies chosen from normal distribution
 u_int = rand(n,1)*2*pi; %Random initial conditions
 u_prime_int = randn(n,1); %random initial velocity conditions
 
-k = 10; %Coupling strength
-a = 10; %alpha term on the first derivative
+k = -100; %Coupling strength
+a = 0.3; %alpha term on the first derivative
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Graph connectivity
@@ -64,7 +64,7 @@ t0 = 0:5:sol_end_point;
 u0 = interp1(t,u,t0);
 
 t= t0;
-u=u0;
+u = mod(u0, 2 * pi);
 frame = 1;
 
 figure(2)
