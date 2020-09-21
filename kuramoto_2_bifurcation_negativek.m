@@ -22,9 +22,9 @@ r = 0.4;
 %going to use the same connections for each (K,a) pair
 G = sw_graph(n,p,r);   %Adjacency matrix of network connections
 
-k0 = -60;
+k0 = -100;
 kn = -40;
-KVec = linspace(k0,kn,50);
+KVec = linspace(k0,kn,1000);
 a = 0.3; %inertia term
 
 tau = 2*pi;
