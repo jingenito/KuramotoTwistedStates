@@ -10,7 +10,7 @@ clf           % clears any figures already up
 %% Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-n = 100; %number of oscillators
+n = 1000; %number of oscillators
 w = randn(n,1); %Random internal frequencies chosen from normal distribution
 u_int = rand(n,1)*2*pi; %Random initial conditions
 u_prime_int = randn(n,1); %random initial velocity conditions
@@ -22,9 +22,9 @@ r = 0.4;
 %going to use the same connections for each (K,a) pair
 G = sw_graph(n,p,r);   %Adjacency matrix of network connections
 
-k0 = -30;
-kn = 0;
-KVec = linspace(k0,kn,1000);
+k0 = -60;
+kn = -40;
+KVec = linspace(k0,kn,50);
 a = 0.3; %inertia term
 
 tau = 2*pi;
