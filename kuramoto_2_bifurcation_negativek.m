@@ -10,7 +10,7 @@ clf           % clears any figures already up
 %% Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-n = 1000; %number of oscillators
+n = 100; %number of oscillators
 w = randn(n,1); %Random internal frequencies chosen from normal distribution
 u_int = rand(n,1)*2*pi; %Random initial conditions
 u_prime_int = randn(n,1); %random initial velocity conditions
@@ -24,11 +24,8 @@ G = sw_graph(n,p,r);   %Adjacency matrix of network connections
 
 k0 = -100;
 kn = -40;
-KVec = linspace(k0,kn,1000);
+KVec = linspace(k0,kn,100);
 a = 0.3; %inertia term
-
-tau = 2*pi;
-q = 2; %number of twisted states
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Loop over all (K,a) pairs and track the long term behavior
@@ -49,7 +46,7 @@ for i=length(KVec):-1:1
 end
 
 disp('Finished Loop 1')
-u_int = mod(tau.*(1:n)'.*q/n,tau); %twisted state vector with q twists
+u_int = TwistedState(2, n); %2 Twisted State
 u_prime_int = zeros(n,1);
 
 Z1 = zeros(1,length(KVec)); %preallocating memory for optimization

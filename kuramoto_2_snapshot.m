@@ -11,10 +11,10 @@ clf           % clears any figures already up
 
 n = 1000; %number of oscillators
 w = randn(n,1); %Random internal frequencies chosen from normal distribution
-u_int = rand(n,1)*2*pi; %Random initial conditions
+u_int = TwistedState(3, n); %3 twist initial conditions
 u_prime_int = randn(n,1); %random initial velocity conditions
 
-k = -100; %Coupling strength
+k = -60; %Coupling strength
 a = 0.3; %alpha term on the first derivative
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
