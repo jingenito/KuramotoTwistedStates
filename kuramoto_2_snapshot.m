@@ -11,10 +11,10 @@ clf           % clears any figures already up
 
 n = 1000; %number of oscillators
 w = randn(n,1); %Random internal frequencies chosen from normal distribution
-u_int = TwistedState(3, n); %3 twist initial conditions
-u_prime_int = randn(n,1); %random initial velocity conditions
+u_int = rand(n,1)*2*pi; 
+u_prime_int = w; %random initial velocity conditions
 
-k = -60; %Coupling strength
+k = 50; %Coupling strength
 a = 0.3; %alpha term on the first derivative
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -49,7 +49,7 @@ plot(cos(u_int),sin(u_int),'.',x1,x2)
 
 pause()
  
-sol_end_point = 200;
+sol_end_point = 50;
 %Integrate model
 disp('Solving ODE')
 % ode45
@@ -60,11 +60,15 @@ disp('Solving ODE')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Interpolate time points for even movie 
-t0 = 0:5:sol_end_point;
+t0 = 0:1:sol_end_point;
 u0 = interp1(t,u,t0);
 
 t= t0;
-u = mod(u0, 2 * pi);
+
+u1 = u0(:,1:n);
+u2 = u0(:,n+1:2*n);
+
+u = [mod(u1, 2*pi), u2];
 frame = 1;
 
 figure(2)
